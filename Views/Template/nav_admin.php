@@ -56,9 +56,31 @@
     </li>
     <?php } ?>
     
+    <?php if (!empty($_SESSION['permisos'][5]['r'])): ?>
+
+        <li class="treeview">
+            <a class="app-menu__item" href="#" data-toggle="treeview">
+                <i class="app-menu__icon fas fa-users-cog"></i> 
+                <span class="app-menu__label">Recursos Humanos</span>
+                <i class="treeview-indicator fa fa-angle-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                
+                <li>
+                    <a class="treeview-item" href="<?= base_url(); ?>/Trabajador">
+                        <i class="icon fas fa-id-badge"></i>
+                        Trabajadores
+                    </a>
+                </li>
+                
+                </ul>
+        </li>
+
+    <?php endif; ?>
+
     <?php 
     // Verifica el permiso de Lectura (r) para el Módulo 5 (Tareas)
-    if(!empty($_SESSION['permisos'][5]['r'])){ 
+    if(!empty($_SESSION['permisos'][12]['r'])){ 
     ?>
     <li>
       <a class="app-menu__item" href="<?= base_url(); ?>/tareas">
@@ -70,7 +92,7 @@
 
     <?php 
     // Verifica el permiso de Lectura (r) para el Módulo 6 (Indicadores)
-    if(!empty($_SESSION['permisos'][6]['r'])){ 
+    if(!empty($_SESSION['permisos'][13]['r'])){ 
     ?>
     <li>
       <a class="app-menu__item" href="<?= base_url(); ?>/indicadores">
@@ -82,7 +104,7 @@
     
     <?php 
     // Verifica el permiso de Lectura (r) para el Módulo 7 (Bitácora Emocional)
-    if(!empty($_SESSION['permisos'][7]['r'])){ 
+    if(!empty($_SESSION['permisos'][14]['r'])){ 
     ?>
     <li>
       <a class="app-menu__item" href="<?= base_url(); ?>/bitacora">
