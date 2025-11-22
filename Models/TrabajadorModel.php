@@ -1,5 +1,4 @@
 <?php 
-
 class TrabajadorModel extends Mysql
 {
     private $intId; 
@@ -183,7 +182,7 @@ class TrabajadorModel extends Mysql
 
     public function selectDepartamentos()
     {
-        $sql = "SELECT id, nombre FROM departamentos WHERE status = 1";
+        $sql = "SELECT id, nombre FROM departamentos";
         $request = $this->select_all($sql);
         return $request;
     }

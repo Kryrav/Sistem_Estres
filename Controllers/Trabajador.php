@@ -1,20 +1,24 @@
 <?php 
-// Ubicación: Controllers/Trabajador.php
-
 class Trabajador extends Controllers
 {
     public function __construct()
     {
         parent::__construct();
-        $this->model = new TrabajadorModel(); 
+			session_start();
+			if(empty($_SESSION['login']))
+			{
+				header('Location: '.base_url().'/login');
+			}
+			getPermisos(5); // Asumiendo Módulo 5: Trabajadores
     }
 
-    public function trabajadores()
+    public function Trabajador()
     {
         $data['page_title'] = "Gestión de Trabajadores";
         $data['page_name'] = "Trabajadores";
         $data['page_tag'] = "trabajadores";
-        $this->views->getView($this, "trabajadores", $data);
+        $data['page_functions_js'] = "functions_trabajador.js";
+        $this->views->getView($this, "Trabajador", $data);
     }
 
     /**
@@ -73,13 +77,13 @@ class Trabajador extends Controllers
      */
     public function setTrabajador()
     {
-        if ($_POST) {
-            // CORREGIDO: Usar 'id' en lugar de 'idTrabajador'
-            $id = empty($_POST['id']) ? 0 : intval($_POST['id']); 
-            
-            $idPersona = intval($_POST['listIdPersona']);
+        if ($_POST) {            
+            // CORRECCIÓN: Manejo de clave indefinida para listSupervisor (Línea 86 corregida)
+            $idSupervisor = !empty($_POST['listSupervisor']) ? intval($_POST['listSupervisor']) : 0; 
+            $id = empty($_POST['id']) ? 0 : intval($_POST['id']); //Id Trabajador
+            $idPersona = !empty($_POST['listIdPersona']) ? intval($_POST['listIdPersona']) : 0; // Se establece a 0 si no se envía (caso de actualización)
+
             $idDepartamento = intval($_POST['listDepartamento']);
-            $idSupervisor = intval($_POST['listSupervisor']);
             $cargo = strClean($_POST['txtCargo']);
             $horasDiarias = intval($_POST['listHorasDiarias']); // NUEVO CAMPO
             $activo = intval($_POST['listActivo']); // CORREGIDO: Usar 'activo'
