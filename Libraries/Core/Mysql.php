@@ -74,6 +74,26 @@
             $del = $result->execute($arrValues);
             return $del;
         }
+
+        
+
+        // Inicia una Transacción
+        public function startTransaction()
+        {
+            $this->conexion->beginTransaction();
+        }
+
+        // Confirma la Transacción
+        public function commitTransaction()
+        {
+            $this->conexion->commit();
+        }
+
+        // Revierte la Transacción
+        public function rollbackTransaction()
+        {
+            $this->conexion->rollBack();
+        }
     }
 ?>
 
