@@ -15,8 +15,8 @@
 
         public function login()
         {
-            $data['page_tag'] = "Login - Sistema MAIN";
-            $data['page_title'] = 'Sistema "Main"';
+            $data['page_tag'] = "Gestión del Estrés Laboral";
+            $data['page_title'] = 'Gestión del Estrés Laboral';
             $data['page_name'] = "login";
             $data['page_functions_js'] = "functions_login.js";
             $this->views->getView($this,"login",$data);

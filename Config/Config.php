@@ -1,7 +1,7 @@
 <?php 
 	
 	//define("BASE_URL", "http://localhost/SistemaCarpeta/");
-	const BASE_URL = "http://localhost/gestion_estres";
+	const BASE_URL = "http://localhost/Sistem_Estres/";
 
 	//Zona horaria Bolivia
 	date_default_timezone_set('America/La_Paz');
