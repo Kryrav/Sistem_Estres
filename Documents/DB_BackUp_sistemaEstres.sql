@@ -134,6 +134,60 @@ LOCK TABLES `dependencias_tareas` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `encuesta_pregunta`
+--
+
+DROP TABLE IF EXISTS `encuesta_pregunta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `encuesta_pregunta` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `encuesta_id` bigint NOT NULL,
+  `pregunta_id` bigint NOT NULL,
+  `orden` int NOT NULL COMMENT 'Secuencia de la pregunta dentro de la encuesta',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_encuesta_pregunta` (`encuesta_id`,`pregunta_id`),
+  KEY `pregunta_id` (`pregunta_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `encuesta_pregunta`
+--
+
+LOCK TABLES `encuesta_pregunta` WRITE;
+/*!40000 ALTER TABLE `encuesta_pregunta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `encuesta_pregunta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `encuesta_respondida`
+--
+
+DROP TABLE IF EXISTS `encuesta_respondida`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `encuesta_respondida` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `encuesta_id` bigint NOT NULL,
+  `persona_id` bigint NOT NULL,
+  `fecha_completada` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_encuesta_persona` (`encuesta_id`,`persona_id`),
+  KEY `persona_id` (`persona_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `encuesta_respondida`
+--
+
+LOCK TABLES `encuesta_respondida` WRITE;
+/*!40000 ALTER TABLE `encuesta_respondida` DISABLE KEYS */;
+/*!40000 ALTER TABLE `encuesta_respondida` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `encuestas`
 --
 
@@ -144,6 +198,8 @@ CREATE TABLE `encuestas` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `titulo` varchar(150) NOT NULL,
   `descripcion` text,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL,
   `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
   `usuario_creador_persona_id` bigint DEFAULT NULL,
   `estado` enum('ACTIVA','INACTIVA','BORRADOR') DEFAULT 'ACTIVA',
@@ -245,7 +301,7 @@ CREATE TABLE `modulo` (
 
 LOCK TABLES `modulo` WRITE;
 /*!40000 ALTER TABLE `modulo` DISABLE KEYS */;
-INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Trabajadores','Visualización de trabajadores',1),(7,'Categorías ','Categorías de indicadores',1),(12,'Tareas y Carga Laboral','Indicadores y reportes',1),(13,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(14,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
+INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Trabajadores','Visualización de trabajadores',1),(7,'Categorías ','Categorías de indicadores',1),(11,'Banco de Preguntas','Banco de Preguntas Disponibles ',1),(12,'Tareas y Carga Laboral','Indicadores y reportes',1),(13,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(14,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
 /*!40000 ALTER TABLE `modulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,12 +315,11 @@ DROP TABLE IF EXISTS `opciones_pregunta`;
 CREATE TABLE `opciones_pregunta` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `pregunta_id` bigint NOT NULL,
-  `texto` varchar(255) NOT NULL,
-  `valor_int` int DEFAULT NULL,
+  `texto_opcion` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `valor_numerico` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `pregunta_id` (`pregunta_id`),
-  CONSTRAINT `opciones_fk_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `pregunta_id` (`pregunta_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,6 +328,7 @@ CREATE TABLE `opciones_pregunta` (
 
 LOCK TABLES `opciones_pregunta` WRITE;
 /*!40000 ALTER TABLE `opciones_pregunta` DISABLE KEYS */;
+INSERT INTO `opciones_pregunta` VALUES (25,1,'En Desacuerdo',2),(26,1,'Totalmente en Desacuerdo',1),(23,1,'De Acuerdo',4),(24,1,'Ni de Acuerdo ni en Desacuerdo',3),(22,1,'Totalmente de Acuerdo',5),(34,2,'Posiblemente',1);
 /*!40000 ALTER TABLE `opciones_pregunta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +352,7 @@ CREATE TABLE `permisos` (
   KEY `moduloid` (`moduloid`),
   CONSTRAINT `permisos_fk_modulo` FOREIGN KEY (`moduloid`) REFERENCES `modulo` (`idmodulo`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `permisos_fk_rol` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,7 +361,7 @@ CREATE TABLE `permisos` (
 
 LOCK TABLES `permisos` WRITE;
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (15,2,1,0,0,0,0),(16,2,2,1,0,0,0),(17,2,3,0,0,0,0),(18,2,4,0,0,0,0),(19,2,12,0,0,0,0),(20,2,13,0,0,0,0),(21,2,14,0,0,0,0),(37,1,1,1,1,1,1),(38,1,2,1,1,1,1),(39,1,3,1,1,1,1),(40,1,4,1,1,1,1),(41,1,5,1,1,1,1),(42,1,7,1,1,1,1),(43,1,12,1,1,1,1),(44,1,13,1,1,1,1),(45,1,14,1,1,1,1);
+INSERT INTO `permisos` VALUES (15,2,1,0,0,0,0),(16,2,2,1,0,0,0),(17,2,3,0,0,0,0),(18,2,4,0,0,0,0),(19,2,12,0,0,0,0),(20,2,13,0,0,0,0),(21,2,14,0,0,0,0),(46,1,1,1,1,1,1),(47,1,2,1,1,1,1),(48,1,3,1,1,1,1),(49,1,4,1,1,1,1),(50,1,5,1,1,1,1),(51,1,7,1,1,1,1),(52,1,11,1,1,1,1),(53,1,12,1,1,1,1),(54,1,13,1,1,1,1),(55,1,14,1,1,1,1);
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,14 +413,13 @@ DROP TABLE IF EXISTS `preguntas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `preguntas` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `encuesta_id` bigint NOT NULL,
-  `texto` text NOT NULL,
-  `tipo` enum('ESCALA','OPCION','TEXTO') DEFAULT 'ESCALA',
-  `orden` int DEFAULT '0',
+  `categoria_id` bigint NOT NULL,
+  `texto_pregunta` text COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo_pregunta` varchar(10) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ESCALA, OPCION, TEXTO',
+  `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `encuesta_id` (`encuesta_id`),
-  CONSTRAINT `preguntas_fk_encuesta` FOREIGN KEY (`encuesta_id`) REFERENCES `encuestas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `categoria_id` (`categoria_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,6 +428,7 @@ CREATE TABLE `preguntas` (
 
 LOCK TABLES `preguntas` WRITE;
 /*!40000 ALTER TABLE `preguntas` DISABLE KEYS */;
+INSERT INTO `preguntas` VALUES (1,1,'¿Siento que el volumen de trabajo que se me asigna es excesivo para mi jornada laboral?','ESCALA',1),(2,1,'¿Soy desesperante?','OPCION',1),(3,1,'¿Que necesitas para tener un buen ambiente laboral?','TEXTO',1);
 /*!40000 ALTER TABLE `preguntas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -416,23 +472,17 @@ DROP TABLE IF EXISTS `respuestas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `respuestas` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `encuesta_id` bigint NOT NULL,
+  `persona_id` bigint NOT NULL,
   `pregunta_id` bigint NOT NULL,
-  `trabajador_id` bigint NOT NULL,
-  `respuesta_texto` text,
-  `respuesta_valor` int DEFAULT NULL,
   `opcion_id` bigint DEFAULT NULL,
-  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `valor_respuesta` int NOT NULL DEFAULT '0',
+  `texto_respuesta` text COLLATE utf8mb4_general_ci,
+  `fecha_registro` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `encuesta_id` (`encuesta_id`,`trabajador_id`),
-  KEY `respuestas_fk_pregunta` (`pregunta_id`),
-  KEY `respuestas_fk_trabajador` (`trabajador_id`),
-  KEY `respuestas_fk_opcion` (`opcion_id`),
-  CONSTRAINT `respuestas_fk_encuesta` FOREIGN KEY (`encuesta_id`) REFERENCES `encuestas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `respuestas_fk_opcion` FOREIGN KEY (`opcion_id`) REFERENCES `opciones_pregunta` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `respuestas_fk_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `respuestas_fk_trabajador` FOREIGN KEY (`trabajador_id`) REFERENCES `trabajador` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `persona_id` (`persona_id`),
+  KEY `pregunta_id` (`pregunta_id`),
+  KEY `opcion_id` (`opcion_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -642,4 +692,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-23 15:56:45
+-- Dump completed on 2025-11-23 17:25:39
