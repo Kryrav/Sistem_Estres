@@ -52,6 +52,33 @@ LOCK TABLES `bitacora_emocional` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `categorias_indicadores`
+--
+
+DROP TABLE IF EXISTS `categorias_indicadores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categorias_indicadores` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_general_ci,
+  `activo` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_nombre_categoria` (`nombre`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categorias_indicadores`
+--
+
+LOCK TABLES `categorias_indicadores` WRITE;
+/*!40000 ALTER TABLE `categorias_indicadores` DISABLE KEYS */;
+INSERT INTO `categorias_indicadores` VALUES (1,'Carga Laboral','Mide la percepción del trabajador sobre la cantidad de tareas, la presión de tiempo y el esfuerzo mental requerido.',1),(2,'Ambiente Organizacional','Evalúa el clima laboral, la cultura de la empresa, la claridad de los roles y la equidad percibida.',1),(3,'Relación con el Supervisor','Mide la calidad de la comunicación, el apoyo recibido y la confianza en el liderazgo inmediato.',1),(4,'Autonomía y Control','Mide el grado de libertad del trabajador para tomar decisiones sobre su trabajo y la influencia que tiene en el proceso.',1),(5,'Recompensa y Reconocimiento','Evalúa la satisfacción con el salario, los beneficios, y el reconocimiento por el trabajo bien hecho.',1);
+/*!40000 ALTER TABLE `categorias_indicadores` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `departamentos`
 --
 
@@ -65,7 +92,7 @@ CREATE TABLE `departamentos` (
   `umbral_alerta_stress` int DEFAULT '7',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +101,7 @@ CREATE TABLE `departamentos` (
 
 LOCK TABLES `departamentos` WRITE;
 /*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
-INSERT INTO `departamentos` VALUES (1,'Gerencia de Sistemas','Departamento de TI/Administración del Sistema',8,'2025-11-21 21:18:36');
+INSERT INTO `departamentos` VALUES (1,'Gerencia de Sistemas','Departamento de TI/Administración del Sistema MAIN',8,'2025-11-21 21:18:36'),(2,'Marketing','Departamento de Marketing',10,'2025-11-22 03:11:39');
 /*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +236,7 @@ CREATE TABLE `modulo` (
   `descripcion` text,
   `status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`idmodulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -218,7 +245,7 @@ CREATE TABLE `modulo` (
 
 LOCK TABLES `modulo` WRITE;
 /*!40000 ALTER TABLE `modulo` DISABLE KEYS */;
-INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Tareas y Carga Laboral','Indicadores y reportes',1),(6,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(7,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
+INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Trabajadores','Visualización de trabajadores',1),(7,'Categorías ','Categorías de indicadores',1),(12,'Tareas y Carga Laboral','Indicadores y reportes',1),(13,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(14,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
 /*!40000 ALTER TABLE `modulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,7 +296,7 @@ CREATE TABLE `permisos` (
   KEY `moduloid` (`moduloid`),
   CONSTRAINT `permisos_fk_modulo` FOREIGN KEY (`moduloid`) REFERENCES `modulo` (`idmodulo`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `permisos_fk_rol` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,7 +305,7 @@ CREATE TABLE `permisos` (
 
 LOCK TABLES `permisos` WRITE;
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (8,1,1,1,1,1,1),(9,1,2,1,1,1,1),(10,1,3,1,1,1,1),(11,1,4,1,1,1,1),(12,1,5,1,1,1,1),(13,1,6,1,1,1,1),(14,1,7,1,1,1,1),(15,2,1,0,0,0,0),(16,2,2,1,0,0,0),(17,2,3,0,0,0,0),(18,2,4,0,0,0,0),(19,2,5,0,0,0,0),(20,2,6,0,0,0,0),(21,2,7,0,0,0,0);
+INSERT INTO `permisos` VALUES (15,2,1,0,0,0,0),(16,2,2,1,0,0,0),(17,2,3,0,0,0,0),(18,2,4,0,0,0,0),(19,2,12,0,0,0,0),(20,2,13,0,0,0,0),(21,2,14,0,0,0,0),(37,1,1,1,1,1,1),(38,1,2,1,1,1,1),(39,1,3,1,1,1,1),(40,1,4,1,1,1,1),(41,1,5,1,1,1,1),(42,1,7,1,1,1,1),(43,1,12,1,1,1,1),(44,1,13,1,1,1,1),(45,1,14,1,1,1,1);
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +335,7 @@ CREATE TABLE `persona` (
   UNIQUE KEY `persona_email_uq` (`email_user`),
   KEY `rolid` (`rolid`),
   CONSTRAINT `persona_fk_rol` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,7 +344,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (1,'7268984','Rene','Vasquez','67230415','rene@gmail.com','$2y$12$vFBpkuCp8651ZqusPFsdju71LSq6IZj0DMftmWHlasFxEH8XXOt0e','7268984','Rene','Av. Paragua Santa Cruz',NULL,1,'2025-11-21 17:18:16',1),(2,'199','Miriam','Montecinos','74939941','empleada1@gmail.com','$2y$12$rMGFae8lG98fJq5cbKgv9uAbzKiagDp2VL1gpTcRq1riRspCc5PFG','199','Nela','Oruro',NULL,2,'2025-11-21 17:56:34',1);
+INSERT INTO `persona` VALUES (1,'7268984','Rene','Vasquez','67230415','rene@gmail.com','$2y$12$vFBpkuCp8651ZqusPFsdju71LSq6IZj0DMftmWHlasFxEH8XXOt0e','7268984','Rene','Av. Paragua Santa Cruz',NULL,1,'2025-11-21 17:18:16',1),(2,'199','Miriam','Montecinos','74939941','trabajadora@gmail.com','$2y$12$rMGFae8lG98fJq5cbKgv9uAbzKiagDp2VL1gpTcRq1riRspCc5PFG','199','Nela','Oruro',NULL,2,'2025-11-21 17:56:34',1),(4,'444','Ruben','Vasquez','7878787','ruben@gmail.com','$2y$12$K3RxZeKu.QSvdo2XVg/qLOjKBvpzRPxCjkpfuFN1y4SuAsWwBYqCq',NULL,NULL,NULL,NULL,3,'2025-11-22 02:36:20',1);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -556,7 +583,7 @@ CREATE TABLE `trabajador` (
   KEY `idx_trabajador_departamento` (`departamento_id`),
   CONSTRAINT `trabajador_fk_departamento` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`) ON DELETE SET NULL,
   CONSTRAINT `trabajador_fk_persona` FOREIGN KEY (`idpersona`) REFERENCES `persona` (`idpersona`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -565,7 +592,7 @@ CREATE TABLE `trabajador` (
 
 LOCK TABLES `trabajador` WRITE;
 /*!40000 ALTER TABLE `trabajador` DISABLE KEYS */;
-INSERT INTO `trabajador` VALUES (1,1,1,NULL,8,1,'1',0);
+INSERT INTO `trabajador` VALUES (1,1,1,'2025-02-10',8,1,'Técnico de Sistemas',1),(3,4,2,'2025-11-22',8,1,'Encargado de Bebidas',1),(4,2,1,'2025-11-22',8,1,'Encargada de Equipo 1',1);
 /*!40000 ALTER TABLE `trabajador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -615,4 +642,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-21 22:25:22
+-- Dump completed on 2025-11-23 15:56:45
