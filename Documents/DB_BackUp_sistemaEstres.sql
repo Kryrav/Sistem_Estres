@@ -65,7 +65,7 @@ CREATE TABLE `categorias_indicadores` (
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_nombre_categoria` (`nombre`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,11 +144,13 @@ CREATE TABLE `encuesta_pregunta` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `encuesta_id` bigint NOT NULL,
   `pregunta_id` bigint NOT NULL,
-  `orden` int NOT NULL COMMENT 'Secuencia de la pregunta dentro de la encuesta',
+  `orden` int NOT NULL DEFAULT '0' COMMENT 'Posición de la pregunta dentro de la encuesta',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_encuesta_pregunta` (`encuesta_id`,`pregunta_id`),
-  KEY `pregunta_id` (`pregunta_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_encuesta_pregunta_pregunta` (`pregunta_id`),
+  CONSTRAINT `fk_encuesta_pregunta_encuesta` FOREIGN KEY (`encuesta_id`) REFERENCES `encuestas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_encuesta_pregunta_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,6 +159,7 @@ CREATE TABLE `encuesta_pregunta` (
 
 LOCK TABLES `encuesta_pregunta` WRITE;
 /*!40000 ALTER TABLE `encuesta_pregunta` DISABLE KEYS */;
+INSERT INTO `encuesta_pregunta` VALUES (1,50,50,1),(2,50,53,2),(3,50,55,3),(4,50,57,4),(5,50,58,5),(8,10,54,1),(9,10,55,2);
 /*!40000 ALTER TABLE `encuesta_pregunta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,12 +173,15 @@ DROP TABLE IF EXISTS `encuesta_respondida`;
 CREATE TABLE `encuesta_respondida` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `encuesta_id` bigint NOT NULL,
-  `persona_id` bigint NOT NULL,
-  `fecha_completada` datetime DEFAULT CURRENT_TIMESTAMP,
+  `trabajador_id` bigint NOT NULL,
+  `fecha_completada` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `estado` enum('PENDIENTE','COMPLETADA','VENCIDA') DEFAULT 'PENDIENTE',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_encuesta_persona` (`encuesta_id`,`persona_id`),
-  KEY `persona_id` (`persona_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  UNIQUE KEY `uk_encuesta_trabajador` (`encuesta_id`,`trabajador_id`),
+  KEY `fk_encuesta_respondida_trabajador` (`trabajador_id`),
+  CONSTRAINT `fk_encuesta_respondida_encuesta` FOREIGN KEY (`encuesta_id`) REFERENCES `encuestas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_encuesta_respondida_trabajador` FOREIGN KEY (`trabajador_id`) REFERENCES `trabajador` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +212,7 @@ CREATE TABLE `encuestas` (
   PRIMARY KEY (`id`),
   KEY `usuario_creador_persona_id` (`usuario_creador_persona_id`),
   CONSTRAINT `encuestas_fk_persona` FOREIGN KEY (`usuario_creador_persona_id`) REFERENCES `persona` (`idpersona`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,6 +221,7 @@ CREATE TABLE `encuestas` (
 
 LOCK TABLES `encuestas` WRITE;
 /*!40000 ALTER TABLE `encuestas` DISABLE KEYS */;
+INSERT INTO `encuestas` VALUES (1,'Evaluación Psicosocial Inicial','Primera evaluación de factores psicosociales obligatoria.','2025-12-01','2025-12-15','2025-11-23 18:25:43',1,'ACTIVA'),(2,'Cuestionario Piloto - Nuevas Preguntas de Liderazgo','Encuesta de prueba interna para evaluar la efectividad y pertinencia de las nuevas preguntas añadidas al banco.','2025-05-01','2025-05-15','2025-11-23 17:50:23',1,'BORRADOR'),(3,'Evaluación de Factores Psicosociales Q4 2024','Resultados utilizados para el informe final de gestión de riesgos del trimestre anterior. Cerrada para nuevas respuestas.','2024-10-01','2024-10-31','2024-09-28 10:30:00',2,'INACTIVA'),(10,'Evaluación Psicosocial Inicial','Primera evaluación de factores psicosociales obligatoria.','2025-12-01','2025-12-15','2025-11-23 18:29:27',1,'ACTIVA'),(50,'Evaluación Psicosocial Inicial (Prueba 5)','Primera evaluación de factores psicosociales obligatoria.','2025-12-01','2025-12-15','2025-11-23 18:32:11',1,'ACTIVA');
 /*!40000 ALTER TABLE `encuestas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +299,7 @@ CREATE TABLE `modulo` (
   `descripcion` text,
   `status` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`idmodulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +308,7 @@ CREATE TABLE `modulo` (
 
 LOCK TABLES `modulo` WRITE;
 /*!40000 ALTER TABLE `modulo` DISABLE KEYS */;
-INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Trabajadores','Visualización de trabajadores',1),(7,'Categorías ','Categorías de indicadores',1),(11,'Banco de Preguntas','Banco de Preguntas Disponibles ',1),(12,'Tareas y Carga Laboral','Indicadores y reportes',1),(13,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(14,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
+INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Trabajadores','Visualización de trabajadores',1),(7,'Categorías ','Categorías de indicadores',1),(11,'Banco de Preguntas','Banco de Preguntas Disponibles ',1),(12,'Encuestas de Estrés','Gestión de encuestas y asignación de preguntas',1),(30,'Tareas y Carga Laboral','Indicadores y reportes',1),(31,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(32,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
 /*!40000 ALTER TABLE `modulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +326,7 @@ CREATE TABLE `opciones_pregunta` (
   `valor_numerico` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pregunta_id` (`pregunta_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +335,7 @@ CREATE TABLE `opciones_pregunta` (
 
 LOCK TABLES `opciones_pregunta` WRITE;
 /*!40000 ALTER TABLE `opciones_pregunta` DISABLE KEYS */;
-INSERT INTO `opciones_pregunta` VALUES (25,1,'En Desacuerdo',2),(26,1,'Totalmente en Desacuerdo',1),(23,1,'De Acuerdo',4),(24,1,'Ni de Acuerdo ni en Desacuerdo',3),(22,1,'Totalmente de Acuerdo',5),(34,2,'Posiblemente',1);
+INSERT INTO `opciones_pregunta` VALUES (22,1,'Totalmente de Acuerdo',5),(23,1,'De Acuerdo',4),(24,1,'Ni de Acuerdo ni en Desacuerdo',3),(25,1,'En Desacuerdo',2),(26,1,'Totalmente en Desacuerdo',1),(34,2,'Posiblemente',1),(35,57,'Sí',5),(36,57,'No',1),(37,58,'Sí',1),(38,58,'No',5);
 /*!40000 ALTER TABLE `opciones_pregunta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,7 +359,7 @@ CREATE TABLE `permisos` (
   KEY `moduloid` (`moduloid`),
   CONSTRAINT `permisos_fk_modulo` FOREIGN KEY (`moduloid`) REFERENCES `modulo` (`idmodulo`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `permisos_fk_rol` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -361,7 +368,7 @@ CREATE TABLE `permisos` (
 
 LOCK TABLES `permisos` WRITE;
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (15,2,1,0,0,0,0),(16,2,2,1,0,0,0),(17,2,3,0,0,0,0),(18,2,4,0,0,0,0),(19,2,12,0,0,0,0),(20,2,13,0,0,0,0),(21,2,14,0,0,0,0),(46,1,1,1,1,1,1),(47,1,2,1,1,1,1),(48,1,3,1,1,1,1),(49,1,4,1,1,1,1),(50,1,5,1,1,1,1),(51,1,7,1,1,1,1),(52,1,11,1,1,1,1),(53,1,12,1,1,1,1),(54,1,13,1,1,1,1),(55,1,14,1,1,1,1);
+INSERT INTO `permisos` VALUES (78,1,1,1,1,1,1),(79,1,2,1,1,1,1),(80,1,3,1,1,1,1),(81,1,4,1,1,1,1),(82,1,5,1,1,1,1),(83,1,7,1,1,1,1),(84,1,11,1,1,1,1),(85,1,12,1,1,1,1),(86,1,30,1,1,1,1),(87,1,31,1,1,1,1),(88,1,32,1,1,1,1),(89,1,12,1,1,1,1),(91,2,1,0,0,0,0),(92,2,2,1,0,0,0),(93,2,3,1,1,0,0),(94,2,4,1,0,0,0),(95,2,5,0,1,0,0),(96,2,7,1,0,0,0),(97,2,11,0,0,0,0),(98,2,12,0,0,0,0),(99,2,30,0,0,0,0),(100,2,31,0,0,0,0),(101,2,32,0,0,0,0);
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -400,7 +407,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES (1,'7268984','Rene','Vasquez','67230415','rene@gmail.com','$2y$12$vFBpkuCp8651ZqusPFsdju71LSq6IZj0DMftmWHlasFxEH8XXOt0e','7268984','Rene','Av. Paragua Santa Cruz',NULL,1,'2025-11-21 17:18:16',1),(2,'199','Miriam','Montecinos','74939941','trabajadora@gmail.com','$2y$12$rMGFae8lG98fJq5cbKgv9uAbzKiagDp2VL1gpTcRq1riRspCc5PFG','199','Nela','Oruro',NULL,2,'2025-11-21 17:56:34',1),(4,'444','Ruben','Vasquez','7878787','ruben@gmail.com','$2y$12$K3RxZeKu.QSvdo2XVg/qLOjKBvpzRPxCjkpfuFN1y4SuAsWwBYqCq',NULL,NULL,NULL,NULL,3,'2025-11-22 02:36:20',1);
+INSERT INTO `persona` VALUES (1,'7268984','Rene','Vasquez','67230415','rene@gmail.com','$2y$12$vFBpkuCp8651ZqusPFsdju71LSq6IZj0DMftmWHlasFxEH8XXOt0e','7268984','Rene','Av. Paragua Santa Cruz',NULL,1,'2025-11-21 17:18:16',1),(2,'199','Miriam','Montecinos','74939941','trabajadora@gmail.com','$2y$12$2/fJw39aFzU6zr0KdmGuUOJpqYkuvG.I7XsqwKG8f4obrFcsY.5H2','199','Nela','Oruro',NULL,3,'2025-11-21 17:56:34',1),(4,'444','Ruben','Vasquez','7878787','ruben@gmail.com','$2y$12$K3RxZeKu.QSvdo2XVg/qLOjKBvpzRPxCjkpfuFN1y4SuAsWwBYqCq',NULL,NULL,NULL,NULL,3,'2025-11-22 02:36:20',1);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,8 +425,9 @@ CREATE TABLE `preguntas` (
   `tipo_pregunta` varchar(10) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ESCALA, OPCION, TEXTO',
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `categoria_id` (`categoria_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_preguntas_categoria` (`categoria_id`),
+  CONSTRAINT `fk_preguntas_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias_indicadores` (`id`) ON DELETE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,7 +436,7 @@ CREATE TABLE `preguntas` (
 
 LOCK TABLES `preguntas` WRITE;
 /*!40000 ALTER TABLE `preguntas` DISABLE KEYS */;
-INSERT INTO `preguntas` VALUES (1,1,'¿Siento que el volumen de trabajo que se me asigna es excesivo para mi jornada laboral?','ESCALA',1),(2,1,'¿Soy desesperante?','OPCION',1),(3,1,'¿Que necesitas para tener un buen ambiente laboral?','TEXTO',1);
+INSERT INTO `preguntas` VALUES (1,1,'¿Siento que el volumen de trabajo que se me asigna es excesivo para mi jornada laboral?','ESCALA',1),(2,1,'¿Soy desesperante?','OPCION',1),(3,1,'¿Que necesitas para tener un buen ambiente laboral?','TEXTO',1),(20,1,'¿Siento que el volumen de trabajo que se me asigna es excesivo para mi jornada laboral?','ESCALA',1),(22,1,'¿Necesito trabajar horas extra para cumplir consistentemente con los plazos?','ESCALA',1),(23,2,'¿La cultura organizacional promueve un equilibrio entre el trabajo y la vida personal?','ESCALA',1),(24,3,'Mi supervisor me ofrece apoyo y retroalimentación constructiva regularmente.','ESCALA',1),(25,4,'¿Tengo suficiente autonomía para decidir cómo realizar mi trabajo?','ESCALA',1),(26,5,'¿Siento que mi salario es justo en relación con mi carga de trabajo y responsabilidades?','ESCALA',1),(27,5,'¿Recibo reconocimiento formal o informal por mis logros?','ESCALA',1),(28,2,'¿Tu departamento se siente sobrecargado?','OPCION',1),(29,4,'¿Tienes una estación de trabajo ergonómica?','OPCION',1),(50,1,'¿Siento que el volumen de trabajo que se me asigna es excesivo para mi jornada laboral?','ESCALA',1),(51,1,'¿Necesito trabajar horas extra para cumplir consistentemente con los plazos?','ESCALA',1),(52,2,'¿La cultura organizacional promueve un equilibrio entre el trabajo y la vida personal?','ESCALA',1),(53,3,'Mi supervisor me ofrece apoyo y retroalimentación constructiva regularmente.','ESCALA',1),(54,4,'¿Tengo suficiente autonomía para decidir cómo realizar mi trabajo?','ESCALA',1),(55,5,'¿Siento que mi salario es justo en relación con mi carga de trabajo y responsabilidades?','ESCALA',1),(56,5,'¿Recibo reconocimiento formal o informal por mis logros?','ESCALA',1),(57,2,'¿Tu departamento se siente sobrecargado?','OPCION',1),(58,4,'¿Tienes una estación de trabajo ergonómica?','OPCION',1);
 /*!40000 ALTER TABLE `preguntas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -692,4 +700,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-23 17:25:39
+-- Dump completed on 2025-11-24 17:43:48
