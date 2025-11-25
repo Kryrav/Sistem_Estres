@@ -1,7 +1,16 @@
 <?php 
-	spl_autoload_register(function($class){
-		if(file_exists("Libraries/".'Core/'.$class.".php")){
-			require_once("Libraries/".'Core/'.$class.".php");
-		}
-	});
- ?>
+spl_autoload_register(function($class){
+    // Primero intenta cargar desde Libraries/Core/
+    if(file_exists("Libraries/Core/".$class.".php")){
+        require_once("Libraries/Core/".$class.".php");
+    }
+    // Luego intenta cargar desde Models/
+    else if(file_exists("Models/".$class.".php")){
+        require_once("Models/".$class.".php");
+    }
+    // Finalmente intenta desde Controllers/
+    else if(file_exists("Controllers/".$class.".php")){
+        require_once("Controllers/".$class.".php");
+    }
+});
+?>
