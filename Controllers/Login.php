@@ -22,39 +22,62 @@
             $this->views->getView($this,"login",$data);
         }
 
-        public function loginUser(){
-            //dep($_POST);
-            if($_POST){
-                if(empty($_POST['txtEmail']) || empty($_POST['txtPassword'])){
-                    $arrResponse = array('status' => false, 'msg' => 'Error de datos' );
+    // En Login.php - Modificar el método loginUser()
+    public function loginUser(){
+        if($_POST){
+            if(empty($_POST['txtEmail']) || empty($_POST['txtPassword'])){
+                $arrResponse = array('status' => false, 'msg' => 'Error de datos' );
+            }else{
+                $strUsuario  =  strtolower(strClean($_POST['txtEmail']));
+                $strPassword = $_POST['txtPassword']; 
+                
+                $requestUser = $this->model->loginUser($strUsuario, $strPassword);
+
+                if(empty($requestUser)){
+                    $arrResponse = array('status' => false, 'msg' => 'El usuario o la contraseña es incorrecto.' ); 
                 }else{
-                    $strUsuario  =  strtolower(strClean($_POST['txtEmail']));
-                    // NOTA DE SEGURIDAD: Ya no se hashea con SHA256. Se envía la contraseña 
-                    // en texto plano al Modelo para que allí se use password_verify() con el hash de la DB.
-                    $strPassword = $_POST['txtPassword']; 
-                    
-                    $requestUser = $this->model->loginUser($strUsuario, $strPassword);
+                    $arrData = $requestUser;
+                    if($arrData['status'] == 1){
+                        $_SESSION['idUser'] = $arrData['idpersona'];
+                        $_SESSION['login'] = true;
 
-                    if(empty($requestUser)){
-                        $arrResponse = array('status' => false, 'msg' => 'El usuario o la contraseña es incorrecto.' ); 
+                        $arrData = $this->model->sessionLogin($_SESSION['idUser']);
+                        sessionUser($_SESSION['idUser']);   
+                        
+                        // ✅ NUEVO: Registrar en bitácora emocional el login
+                        $this->registrarBitacoraLogin($_SESSION['idUser']);
+                                
+                        $arrResponse = array('status' => true, 'msg' => 'ok');
                     }else{
-                        $arrData = $requestUser;
-                        if($arrData['status'] == 1){
-                            $_SESSION['idUser'] = $arrData['idpersona'];
-                            $_SESSION['login'] = true;
-
-                            $arrData = $this->model->sessionLogin($_SESSION['idUser']);
-                            sessionUser($_SESSION['idUser']);                 
-                            $arrResponse = array('status' => true, 'msg' => 'ok');
-                        }else{
-                            $arrResponse = array('status' => false, 'msg' => 'Usuario inactivo.');
-                        }
+                        $arrResponse = array('status' => false, 'msg' => 'Usuario inactivo.');
                     }
                 }
-                echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
             }
-            die();
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
         }
+        die();
+    }
+
+    // En Login.php - Modificar el método registrarBitacoraLogin
+    private function registrarBitacoraLogin($idUsuario)
+    {
+        try {
+            // Los modelos se cargan automáticamente
+            $trabajadorModel = new TrabajadorModel();
+            $bitacoraModel = new BitacoraModel();
+            
+            $trabajador = $trabajadorModel->getTrabajadorByPersona($idUsuario);
+            
+            if($trabajador && $trabajador['activo'] == 1) {
+                $bitacoraModel->insertRegistroAutomatico(
+                    $trabajador['id'], 
+                    'login_checkin'
+                );
+            }
+        } catch (Exception $e) {
+            error_log("Error al registrar bitácora login: " . $e->getMessage());
+        }
+    }
 
         public function resetPass(){
             if($_POST){
