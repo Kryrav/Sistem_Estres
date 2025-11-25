@@ -1,56 +1,121 @@
+/* ===========================
+   Sidebar User
+=========================== */
+.app-sidebar__user {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+}
+
 .app-sidebar__user-avatar {
     width: 48px;
+    height: 48px;
+    border-radius: 50%;
     background: gray;
-    padding: 6px;
-}
-.app-sidebar__toggle{
-	display: -webkit-flex;
-	display: -moz-flex;
-	display: -ms-flex;
-	display: -o-flex;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 15pt;
-}
-.app-sidebar__toggle::before{
-	display: none;
-}
-.headerRegister, .header-primary{
-	background: #009688;
-	color: #FFF;
-}
-.headerUpdate{
-	background: #007bff;
-	color: #FFF;
-}
-.notBlock{
-	display: none;
-}
-/*Estilos login*/
-#divLoading{
-	position: fixed;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: rgba(254,254,255, .65);
-	z-index: 9999;
-	display: none;
-}
-#divLoading img{
-	width: 50px;
-	height: 50px;
-}
-.required{
-	color: red;
-	font-size: 13pt;
-	font-weight: bold;
+    padding: 4px;
+    object-fit: cover;
 }
 
+.app-sidebar__user div {
+    margin-left: 10px;
+}
 
+.app-sidebar__user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0;
+    color: #333;
+}
+
+.app-sidebar__user-designation {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0;
+}
+
+/* ===========================
+   Sidebar general
+=========================== */
+.app-sidebar {
+    width: 250px;
+    background-color: #fff;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: width 0.3s;
+}
+
+.app-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.app-menu__item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s, color 0.3s;
+}
+
+.app-menu__item:hover,
+.app-menu__item.active {
+    background: #009688;
+    color: #fff;
+}
+
+.app-menu__icon {
+    width: 25px;
+    text-align: center;
+    margin-right: 12px;
+}
+
+/* Treeview submenu */
+.treeview-menu {
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+
+.treeview-menu .treeview-item {
+    display: block;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    color: #555;
+    transition: color 0.3s;
+}
+
+.treeview-menu .treeview-item:hover {
+    color: #009688;
+}
+
+.treeview > .app-menu__item[aria-expanded="true"] + .treeview-menu {
+    display: block;
+}
+
+/* ===========================
+   Contenido principal
+=========================== */
+.app-content {
+    margin-left: 250px;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    transition: margin-left 0.3s;
+}
+
+/* ===========================
+   Tiles
+=========================== */
 .tile {
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
     border-radius: 12px;
@@ -111,19 +176,55 @@
     margin-top: 12px;
 }
 
-.tile-stress i {
-    color: #ff6b6b;
+/* ===========================
+   Tabla de Tareas
+=========================== */
+.table-responsive {
+    margin-top: 20px;
 }
 
-.tile-tasks i {
-    color: #36a2eb;
+.table-hover tbody tr:hover {
+    background-color: #e0f7fa;
 }
 
-.tile-log i {
-    color: #ffcd56;
+.table th, .table td {
+    vertical-align: middle !important;
 }
 
-.list-group-item i {
-    margin-right: 8px;
-    color: #009688;
+/* Botón nueva tarea */
+.btn-success {
+    background-color: #009688;
+    border-color: #009688;
+}
+
+.btn-success:hover {
+    background-color: #00bfa5;
+    border-color: #00bfa5;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 992px) {
+    .app-sidebar {
+        width: 200px;
+    }
+
+    .app-content {
+        margin-left: 200px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-sidebar {
+        width: 0;
+        position: fixed;
+        z-index: 1001;
+    }
+
+    .app-content {
+        margin-left: 0;
+        padding: 10px;
+    }
 }

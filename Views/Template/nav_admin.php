@@ -92,6 +92,16 @@
       </li>
     <?php endif; ?>
 
+    <!-- Tareas y Carga Laboral -->
+    <?php if(!empty($_SESSION['permisos'][5]['r'])): ?>
+      <li>
+        <a class="app-menu__item" href="<?= base_url(); ?>/tareas">
+          <i class="app-menu__icon fas fa-tasks"></i>
+          <span class="app-menu__label">Tareas y Carga Laboral</span>
+        </a>
+      </li>
+    <?php endif; ?>
+
     <!-- Logout -->
     <li>
       <a class="app-menu__item" href="<?= base_url(); ?>/logout">
