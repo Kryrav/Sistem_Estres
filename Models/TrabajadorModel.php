@@ -201,4 +201,62 @@ class TrabajadorModel extends Mysql
         $request = $this->select_all($sql);
         return $request;
     }
+
+    // =========================================================================
+    // MÉTODOS PARA INTEGRACIÓN CON BITÁCORA EMOCIONAL
+    // =========================================================================
+
+    /**
+     * Obtiene trabajador por ID de persona - PARA INTEGRACIÓN CON LOGIN
+     */
+    public function getTrabajadorByPersona($idPersona)
+    {
+        $sql = "SELECT t.id, t.departamento_id, t.cargo, t.activo,
+                       p.nombres, p.apellidos, p.email_user
+                FROM trabajador t
+                INNER JOIN persona p ON t.idpersona = p.idpersona
+                WHERE t.idpersona = ? AND t.activo = 1 
+                LIMIT 1";
+        return $this->select($sql, [$idPersona]);
+    }
+
+    /**
+     * Obtiene trabajador por ID de trabajador - PARA BITÁCORA
+     */
+    public function getTrabajadorById($idTrabajador)
+    {
+        $sql = "SELECT t.*, p.nombres, p.apellidos, p.email_user,
+                       d.nombre as departamento, d.umbral_alerta_stress
+                FROM trabajador t
+                INNER JOIN persona p ON t.idpersona = p.idpersona
+                LEFT JOIN departamentos d ON t.departamento_id = d.id
+                WHERE t.id = ? AND t.activo = 1";
+        return $this->select($sql, [$idTrabajador]);
+    }
+
+    /**
+     * Obtiene trabajadores por departamento - PARA REPORTES
+     */
+    public function getTrabajadoresByDepartamento($departamentoId)
+    {
+        $sql = "SELECT t.id, CONCAT(p.nombres, ' ', p.apellidos) as nombre_completo,
+                       t.cargo, p.email_user
+                FROM trabajador t
+                INNER JOIN persona p ON t.idpersona = p.idpersona
+                WHERE t.departamento_id = ? AND t.activo = 1";
+        return $this->select_all($sql, [$departamentoId]);
+    }
+
+    /**
+     * Verifica si una persona es supervisor - PARA PERMISOS
+     */
+    public function esSupervisor($idPersona)
+    {
+        $sql = "SELECT COUNT(*) as es_supervisor 
+                FROM trabajador t
+                INNER JOIN persona p ON t.idpersona = p.idpersona
+                WHERE t.idpersona = ? AND p.rolid IN (1,2) AND t.activo = 1";
+        $result = $this->select($sql, [$idPersona]);
+        return ($result && $result['es_supervisor'] > 0);
+    }
 }
