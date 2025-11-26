@@ -1,6 +1,4 @@
-/* ===========================
-   Sidebar User
-=========================== */
+/* Sidebar User */
 .app-sidebar__user {
     display: flex;
     align-items: center;
@@ -35,9 +33,7 @@
     margin: 0;
 }
 
-/* ===========================
-   Sidebar general
-=========================== */
+/* Sidebar general */
 .app-sidebar {
     width: 250px;
     background-color: #fff;
@@ -102,20 +98,7 @@
     display: block;
 }
 
-/* ===========================
-   Contenido principal
-=========================== */
-.app-content {
-    margin-left: 250px;
-    padding: 20px;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    transition: margin-left 0.3s;
-}
-
-/* ===========================
-   Tiles
-=========================== */
+/* Tile improvements */
 .tile {
     background: linear-gradient(145deg, #ffffff, #f8f9fa);
     border-radius: 12px;
@@ -176,55 +159,63 @@
     margin-top: 12px;
 }
 
-/* ===========================
-   Tabla de Tareas
-=========================== */
+.tile-stress i {
+    color: #ff6b6b;
+}
+
+.tile-tasks i {
+    color: #36a2eb;
+}
+
+.tile-log i {
+    color: #ffcd56;
+}
+
+.list-group-item i {
+    margin-right: 8px;
+    color: #009688;
+}
+
+/* Contenedor de tabla responsive */
 .table-responsive {
-    margin-top: 20px;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
-.table-hover tbody tr:hover {
-    background-color: #e0f7fa;
-}
-
+/* Evitar que se rompan las celdas */
 .table th, .table td {
-    vertical-align: middle !important;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
 }
 
-/* Botón nueva tarea */
-.btn-success {
-    background-color: #009688;
-    border-color: #009688;
-}
-
-.btn-success:hover {
-    background-color: #00bfa5;
-    border-color: #00bfa5;
-}
-
-/* ===========================
-   Responsive
-=========================== */
-@media (max-width: 992px) {
+/* Ajuste de tamaño en móviles */
+@media (max-width: 768px) {
     .app-sidebar {
         width: 200px;
     }
 
-    .app-content {
-        margin-left: 200px;
-        padding: 15px;
-    }
-}
-
-@media (max-width: 768px) {
-    .app-sidebar {
-        width: 0;
-        position: fixed;
-        z-index: 1001;
+    .app-menu__item {
+        padding: 10px 15px;
+        font-size: 0.85rem;
     }
 
-    .app-content {
-        margin-left: 0;
-        padding: 10px;
+    .tile-summary {
+        padding: 25px 15px;
+    }
+
+    .table th, .table td {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+
+    .btn {
+        font-size: 0.75rem;
+        padding: 4px 6px;
+    }
+
+    #tableTareas_length, #tableTareas_filter {
+        font-size: 0.8rem;
     }
 }
