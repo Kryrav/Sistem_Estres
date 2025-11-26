@@ -9,74 +9,54 @@ class Tareas extends Controllers
             header('Location: '.base_url().'/login');
             exit;
         }
-        getPermisos(5); // 5 = ID del módulo Tareas
+        getPermisos(5); 
     }
-
-    // Vista principal de Tareas (Admin/Supervisor)
     public function Tareas()
     {
         if(empty($_SESSION['permisosMod']['r'])){
             header("Location: ".base_url().'/dashboard');
             exit;
         }
-
         $data['page_id'] = 5;
         $data['page_tag'] = "Tareas";
         $data['page_name'] = "tareas";
         $data['page_title'] = "Gestión de Tareas <small>Sistema</small>";
         $data['page_functions_js'] = "functions_tareas.js";
-
-        // Traer trabajadores y tipos de tarea
         $data['trabajadores'] = $this->model->selectTrabajadores();
         $data['tipos_tarea'] = $this->model->selectTiposTarea();
-
         $this->views->getView($this,"tareas",$data);
     }
-
-    // Vista de Mis Tareas (para trabajadores)
     public function misTareas()
     {
         if(empty($_SESSION['permisosMod']['r'])){
             header("Location: ".base_url().'/dashboard');
             exit;
         }
-
         $data['page_id'] = 5;
         $data['page_tag'] = "Mis Tareas";
         $data['page_name'] = "mis_tareas";
         $data['page_title'] = "Mis Tareas Asignadas <small>Sistema</small>";
         $data['page_functions_js'] = "functions_mis_tareas.js";
-
         $this->views->getView($this,"mistareas",$data);
     }
-
-    // =========================================================================
-    // MÉTODOS PARA ADMIN/SUPERVISOR
-    // =========================================================================
-
-    // Listar todas las tareas para DataTable
     public function listar()
     {
         if($_SESSION['permisosMod']['r']){
             $arrData = $this->model->selectTareas();
             for($i = 0; $i < count($arrData); $i++){
                 $btnEdit = $btnDelete = "";
-
                 if($_SESSION['permisosMod']['u']){
                     $btnEdit = '<button class="btn btn-primary btn-sm" onclick="fntEditTarea('.$arrData[$i]['id'].')" title="Editar"><i class="fas fa-pencil-alt"></i></button>';
                 }
                 if($_SESSION['permisosMod']['d']){
                     $btnDelete = '<button class="btn btn-danger btn-sm" onclick="fntDelTarea('.$arrData[$i]['id'].')" title="Eliminar"><i class="far fa-trash-alt"></i></button>';
                 }
-
                 $arrData[$i]['options'] = '<div class="text-center">'.$btnEdit.' '.$btnDelete.'</div>';
             }
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
         }
         die();
     }
-
-    // Guardar nueva tarea o actualizar existente
     public function guardar()
     {
         $id = intval($_POST['idTarea']);

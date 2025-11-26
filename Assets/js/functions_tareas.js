@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Inicializar DataTable
     tableTareas = $('#tableTareas').DataTable({
         "ajax": {
-            "url": "Tareas/listar",
+            "url": "tareas/listar",
             "dataSrc": ""
         },
         "columns": [
