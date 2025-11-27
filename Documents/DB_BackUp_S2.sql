@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: gestion_estres_2
+-- Host: localhost    Database: gestion_estres
 -- ------------------------------------------------------
 -- Server version	9.1.0
 
@@ -71,7 +71,7 @@ CREATE TABLE `bitacora_emocional` (
   KEY `idx_bitacora_trabajador_fecha` (`trabajador_id`,`fecha`),
   CONSTRAINT `bitacora_fk_tarea` FOREIGN KEY (`tarea_relacionada_id`) REFERENCES `tareas` (`id`) ON DELETE SET NULL,
   CONSTRAINT `bitacora_fk_trabajador` FOREIGN KEY (`trabajador_id`) REFERENCES `trabajador` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +80,7 @@ CREATE TABLE `bitacora_emocional` (
 
 LOCK TABLES `bitacora_emocional` WRITE;
 /*!40000 ALTER TABLE `bitacora_emocional` DISABLE KEYS */;
-INSERT INTO `bitacora_emocional` VALUES (1,1,1,'2025-11-24','08:00:00','login_checkin',8,2,'motivado','Buen comienzo de día, listo para trabajar en el módulo de login'),(2,1,1,'2025-11-24','12:30:00','cierre_tarea',6,4,'satisfecho','Módulo de login completado con éxito, buen progreso'),(3,4,3,'2025-11-24','09:00:00','login_checkin',7,3,'motivado','Iniciando documentación de APIs, día productivo por delante'),(4,4,5,'2025-11-24','11:00:00','login_checkin',6,5,'ansioso','Varios tickets de soporte pendientes, día intenso'),(5,4,5,'2025-11-24','13:30:00','cierre_tarea',5,6,'frustrado','Algunos usuarios con problemas complejos, requieren más tiempo'),(6,1,2,'2025-11-25','10:00:00','login_checkin',9,1,'motivado','Reunión de planificación, buen ambiente de equipo'),(7,1,6,'2025-11-25','14:00:00','login_checkin',7,4,'satisfecho','Avanzando con testing, encontrando algunos bugs menores'),(8,4,4,'2025-11-26','08:30:00','login_checkin',6,5,'cansado','Análisis de datos complejo, requiere mucha concentración'),(9,1,8,'2025-11-26','15:00:00','login_checkin',8,3,'motivado','Revisión de código interesante, buen aprendizaje'),(10,4,7,'2025-11-27','09:00:00','login_checkin',7,2,'satisfecho','Preparando material de capacitación, buen flujo de trabajo'),(11,1,NULL,'2025-11-26','18:16:58','login_checkin',NULL,NULL,NULL,NULL),(12,1,NULL,'2025-11-26','18:17:16','logout',NULL,NULL,NULL,NULL),(13,1,NULL,'2025-11-26','18:17:22','login_checkin',NULL,NULL,NULL,NULL),(14,1,NULL,'2025-11-26','18:20:16','login_checkin',NULL,NULL,NULL,NULL),(15,1,NULL,'2025-11-26','18:59:25','login_checkin',NULL,NULL,NULL,NULL),(16,1,NULL,'2025-11-26','18:59:51','logout',NULL,NULL,NULL,NULL),(17,1,NULL,'2025-11-26','18:59:56','login_checkin',NULL,NULL,NULL,NULL);
+INSERT INTO `bitacora_emocional` VALUES (1,1,1,'2025-11-24','08:00:00','login_checkin',8,2,'motivado','Buen comienzo de día, listo para trabajar en el módulo de login'),(2,1,1,'2025-11-24','12:30:00','cierre_tarea',6,4,'satisfecho','Módulo de login completado con éxito, buen progreso'),(3,4,3,'2025-11-24','09:00:00','login_checkin',7,3,'motivado','Iniciando documentación de APIs, día productivo por delante'),(4,4,5,'2025-11-24','11:00:00','login_checkin',6,5,'ansioso','Varios tickets de soporte pendientes, día intenso'),(5,4,5,'2025-11-24','13:30:00','cierre_tarea',5,6,'frustrado','Algunos usuarios con problemas complejos, requieren más tiempo'),(6,1,2,'2025-11-25','10:00:00','login_checkin',9,1,'motivado','Reunión de planificación, buen ambiente de equipo'),(7,1,6,'2025-11-25','14:00:00','login_checkin',7,4,'satisfecho','Avanzando con testing, encontrando algunos bugs menores'),(8,4,4,'2025-11-26','08:30:00','login_checkin',6,5,'cansado','Análisis de datos complejo, requiere mucha concentración'),(9,1,8,'2025-11-26','15:00:00','login_checkin',8,3,'motivado','Revisión de código interesante, buen aprendizaje'),(10,4,7,'2025-11-27','09:00:00','login_checkin',7,2,'satisfecho','Preparando material de capacitación, buen flujo de trabajo'),(11,1,NULL,'2025-11-26','18:16:58','login_checkin',NULL,NULL,NULL,NULL),(12,1,NULL,'2025-11-26','18:17:16','logout',NULL,NULL,NULL,NULL),(13,1,NULL,'2025-11-26','18:17:22','login_checkin',NULL,NULL,NULL,NULL),(14,1,NULL,'2025-11-26','18:20:16','login_checkin',NULL,NULL,NULL,NULL),(15,1,NULL,'2025-11-26','18:59:25','login_checkin',NULL,NULL,NULL,NULL),(16,1,NULL,'2025-11-26','18:59:51','logout',NULL,NULL,NULL,NULL),(17,1,NULL,'2025-11-26','18:59:56','login_checkin',NULL,NULL,NULL,NULL),(18,1,NULL,'2025-11-26','19:40:03','login_checkin',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `bitacora_emocional` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +183,7 @@ CREATE TABLE `encuesta_pregunta` (
   KEY `fk_encuesta_pregunta_pregunta` (`pregunta_id`),
   CONSTRAINT `fk_encuesta_pregunta_encuesta` FOREIGN KEY (`encuesta_id`) REFERENCES `encuestas` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_encuesta_pregunta_pregunta` FOREIGN KEY (`pregunta_id`) REFERENCES `preguntas` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +192,7 @@ CREATE TABLE `encuesta_pregunta` (
 
 LOCK TABLES `encuesta_pregunta` WRITE;
 /*!40000 ALTER TABLE `encuesta_pregunta` DISABLE KEYS */;
-INSERT INTO `encuesta_pregunta` VALUES (1,50,50,1),(2,50,53,2),(3,50,55,3),(4,50,57,4),(5,50,58,5),(8,10,54,1),(9,10,55,2);
+INSERT INTO `encuesta_pregunta` VALUES (8,10,54,1),(9,10,55,2),(14,50,50,1),(15,50,53,2),(16,50,55,3),(17,50,57,4),(18,50,58,5);
 /*!40000 ALTER TABLE `encuesta_pregunta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +279,7 @@ CREATE TABLE `indicadores_estres` (
   KEY `departamento_id` (`departamento_id`),
   CONSTRAINT `indicadores_fk_departamento` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`) ON DELETE SET NULL,
   CONSTRAINT `indicadores_fk_trabajador` FOREIGN KEY (`trabajador_id`) REFERENCES `trabajador` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +288,7 @@ CREATE TABLE `indicadores_estres` (
 
 LOCK TABLES `indicadores_estres` WRITE;
 /*!40000 ALTER TABLE `indicadores_estres` DISABLE KEYS */;
-INSERT INTO `indicadores_estres` VALUES (1,1,1,3.20,'bajo','promedio_bitacora','2025-11-24 17:00:00'),(2,4,1,4.80,'medio','promedio_bitacora','2025-11-24 17:00:00'),(3,3,2,5.20,'medio','promedio_encuesta','2025-11-24 17:00:00'),(4,1,1,2.90,'bajo','promedio_bitacora','2025-11-25 17:00:00'),(5,4,1,5.60,'medio','promedio_bitacora','2025-11-25 17:00:00'),(6,1,1,3.50,'bajo','combinado','2025-11-26 17:00:00'),(7,4,1,4.20,'medio','combinado','2025-11-26 17:00:00'),(8,3,2,6.10,'alto','promedio_encuesta','2025-11-26 17:00:00'),(9,1,1,3.10,'bajo','combinado','2025-11-27 17:00:00'),(10,4,1,4.90,'medio','combinado','2025-11-27 17:00:00');
+INSERT INTO `indicadores_estres` VALUES (1,1,1,3.20,'bajo','promedio_bitacora','2025-11-24 17:00:00'),(2,4,1,4.80,'medio','promedio_bitacora','2025-11-24 17:00:00'),(3,3,2,5.20,'medio','promedio_encuesta','2025-11-24 17:00:00'),(4,1,1,2.90,'bajo','promedio_bitacora','2025-11-25 17:00:00'),(5,4,1,5.60,'medio','promedio_bitacora','2025-11-25 17:00:00'),(6,1,1,3.50,'bajo','combinado','2025-11-26 17:00:00'),(7,4,1,4.20,'medio','combinado','2025-11-26 17:00:00'),(8,3,2,6.10,'alto','promedio_encuesta','2025-11-26 17:00:00'),(9,1,1,3.10,'bajo','combinado','2025-11-27 17:00:00'),(10,4,1,4.90,'medio','combinado','2025-11-27 17:00:00'),(11,1,1,3.20,'bajo','combinado','2025-11-24 17:00:00'),(12,4,1,4.80,'medio','combinado','2025-11-24 17:00:00'),(13,3,2,5.20,'medio','promedio_encuesta','2025-11-24 17:00:00'),(14,1,1,2.90,'bajo','promedio_bitacora','2025-11-25 17:00:00'),(15,4,1,5.60,'medio','promedio_bitacora','2025-11-25 17:00:00'),(16,1,1,3.50,'bajo','combinado','2025-11-26 17:00:00'),(17,4,1,4.20,'medio','combinado','2025-11-26 17:00:00'),(18,3,2,6.10,'alto','promedio_encuesta','2025-11-26 17:00:00'),(19,1,1,3.10,'bajo','combinado','2025-11-27 17:00:00'),(20,4,1,4.90,'medio','combinado','2025-11-27 17:00:00');
 /*!40000 ALTER TABLE `indicadores_estres` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,7 +309,7 @@ CREATE TABLE `intervenciones_sistema` (
   PRIMARY KEY (`id`),
   KEY `trabajador_id` (`trabajador_id`),
   CONSTRAINT `interv_fk_trabajador` FOREIGN KEY (`trabajador_id`) REFERENCES `trabajador` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,7 +318,7 @@ CREATE TABLE `intervenciones_sistema` (
 
 LOCK TABLES `intervenciones_sistema` WRITE;
 /*!40000 ALTER TABLE `intervenciones_sistema` DISABLE KEYS */;
-INSERT INTO `intervenciones_sistema` VALUES (1,4,'2025-11-24 13:45:00','descanso_sugerido','Nivel de estrés elevado detectado. Se sugiere pausa activa de 15 minutos.','pendiente'),(2,3,'2025-11-26 10:30:00','alerta_burnout','Patrón de estrés creciente detectado. Recomendación: evaluar carga de trabajo.','leida'),(3,4,'2025-11-25 16:20:00','redistribucion_carga','Multiple registro de frustración. Considerar redistribución de tareas complejas.','pendiente'),(4,1,'2025-11-27 09:15:00','felicitacion','Excelente manejo del estrés y energía consistentemente alta. ¡Buen trabajo!','aplicada'),(5,4,'2025-11-26 14:30:00','descanso_sugerido','Baja energía detectada en horas de la tarde. Recomendación: pausa para recargar.','ignorada'),(6,3,'2025-11-28 11:00:00','alerta_burnout','Niveles de estrés persistentemente altos. Se sugiere intervención del supervisor.','pendiente'),(7,4,'2025-11-27 15:45:00','redistribucion_carga','Saturación de tareas complejas detectada. Evaluar priorización.','leida'),(8,1,'2025-11-28 08:30:00','felicitacion','Manejo ejemplar del estrés bajo presión. Reconocimiento por resiliencia.','aplicada'),(9,4,'2025-11-28 13:20:00','descanso_sugerido','Patrón de estrés post-almuerzo detectado. Pausa recomendada.','pendiente'),(10,3,'2025-11-29 10:00:00','alerta_burnout','Tendencia preocupante en niveles de estrés. Intervención requerida.','leida');
+INSERT INTO `intervenciones_sistema` VALUES (1,4,'2025-11-24 13:45:00','descanso_sugerido','Nivel de estrés elevado detectado. Se sugiere pausa activa de 15 minutos.','pendiente'),(2,3,'2025-11-26 10:30:00','alerta_burnout','Patrón de estrés creciente detectado. Recomendación: evaluar carga de trabajo.','leida'),(3,4,'2025-11-25 16:20:00','redistribucion_carga','Multiple registro de frustración. Considerar redistribución de tareas complejas.','pendiente'),(4,1,'2025-11-27 09:15:00','felicitacion','Excelente manejo del estrés y energía consistentemente alta. ¡Buen trabajo!','aplicada'),(5,4,'2025-11-26 14:30:00','descanso_sugerido','Baja energía detectada en horas de la tarde. Recomendación: pausa para recargar.','ignorada'),(6,3,'2025-11-28 11:00:00','alerta_burnout','Niveles de estrés persistentemente altos. Se sugiere intervención del supervisor.','pendiente'),(7,4,'2025-11-27 15:45:00','redistribucion_carga','Saturación de tareas complejas detectada. Evaluar priorización.','leida'),(8,1,'2025-11-28 08:30:00','felicitacion','Manejo ejemplar del estrés bajo presión. Reconocimiento por resiliencia.','aplicada'),(9,4,'2025-11-28 13:20:00','descanso_sugerido','Patrón de estrés post-almuerzo detectado. Pausa recomendada.','pendiente'),(10,3,'2025-11-29 10:00:00','alerta_burnout','Tendencia preocupante en niveles de estrés. Intervención requerida.','leida'),(11,1,'2025-11-26 20:30:59','descanso_sugerido','Por buen elemento','pendiente');
 /*!40000 ALTER TABLE `intervenciones_sistema` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +344,7 @@ CREATE TABLE `modulo` (
 
 LOCK TABLES `modulo` WRITE;
 /*!40000 ALTER TABLE `modulo` DISABLE KEYS */;
-INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(4,'Departamentos','Gestión de tareas',1),(5,'Trabajadores','Visualización de trabajadores',1),(7,'Categorías ','Categorías de indicadores',1),(11,'Banco de Preguntas','Banco de Preguntas Disponibles ',1),(12,'Encuestas de Estrés','Gestión de encuestas y asignación de preguntas',1),(30,'Tareas y Carga Laboral','Indicadores y reportes',1),(31,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(32,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1);
+INSERT INTO `modulo` VALUES (1,'Dashboard','Vista general del sistema',1),(2,'Usuarios','Gestión de usuarios',1),(3,'Roles y Permisos','Gestión de encuestas',1),(10,'Departamentos','Gestión de tareas',1),(11,'Trabajadores','Visualización de trabajadores',1),(20,'Encuestas de Estrés','Gestión de encuestas y asignación de preguntas',1),(21,'Banco de Preguntas','Banco de Preguntas Disponibles',1),(22,'Categorías','Categorías de indicadores',1),(30,'Tareas y Carga Laboral','Indicadores y reportes',1),(31,'Mis Tareas Asignadas','Detalle de las tareas asignadas a cada trabajador',1),(32,'Bitácora Emocional','Visualización de la bitácora de trabajadores',1),(40,'Indicadores de Estrés','Reportes y métricas de nivel de estrés',1),(41,'Intervenciones','Intervenciones o mensajes del sistema',1),(42,'Analíticas','Vista de Reportes',1);
 /*!40000 ALTER TABLE `modulo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +395,7 @@ CREATE TABLE `permisos` (
   KEY `moduloid` (`moduloid`),
   CONSTRAINT `permisos_fk_modulo` FOREIGN KEY (`moduloid`) REFERENCES `modulo` (`idmodulo`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `permisos_fk_rol` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,7 +404,7 @@ CREATE TABLE `permisos` (
 
 LOCK TABLES `permisos` WRITE;
 /*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
-INSERT INTO `permisos` VALUES (78,1,1,1,1,1,1),(79,1,2,1,1,1,1),(80,1,3,1,1,1,1),(81,1,4,1,1,1,1),(82,1,5,1,1,1,1),(83,1,7,1,1,1,1),(84,1,11,1,1,1,1),(85,1,12,1,1,1,1),(86,1,30,1,1,1,1),(87,1,31,1,1,1,1),(88,1,32,1,1,1,1),(89,1,12,1,1,1,1),(91,2,1,0,0,0,0),(92,2,2,1,0,0,0),(93,2,3,1,1,0,0),(94,2,4,1,0,0,0),(95,2,5,0,1,0,0),(96,2,7,1,0,0,0),(97,2,11,0,0,0,0),(98,2,12,0,0,0,0),(99,2,30,0,0,0,0),(100,2,31,0,0,0,0),(101,2,32,0,0,0,0);
+INSERT INTO `permisos` VALUES (127,1,1,1,1,1,1),(128,1,2,1,1,1,1),(129,1,3,1,1,1,1),(130,1,10,1,1,1,1),(131,1,11,1,1,1,1),(132,1,20,1,1,1,1),(133,1,21,1,1,1,1),(134,1,22,1,1,1,1),(135,1,30,1,1,1,1),(136,1,31,1,1,1,1),(137,1,32,1,1,1,1),(138,1,40,1,1,1,1),(139,1,41,1,1,1,1),(140,1,42,1,1,1,1);
 /*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,7 +495,7 @@ CREATE TABLE `reportes` (
   KEY `reportes_fk_persona` (`generado_por_persona_id`),
   CONSTRAINT `reportes_fk_departamento` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`) ON DELETE SET NULL,
   CONSTRAINT `reportes_fk_persona` FOREIGN KEY (`generado_por_persona_id`) REFERENCES `persona` (`idpersona`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -504,6 +504,7 @@ CREATE TABLE `reportes` (
 
 LOCK TABLES `reportes` WRITE;
 /*!40000 ALTER TABLE `reportes` DISABLE KEYS */;
+INSERT INTO `reportes` VALUES (1,1,3.20,'Nivel de estrés bajo en el departamento de Sistemas. Buen manejo de carga laboral y ambiente positivo. Se recomienda mantener estrategias actuales de gestión del estrés.','2025-11-20 13:00:00',1),(2,2,6.80,'Nivel de estrés alto en Recursos Humanos. Se identificó sobrecarga por proceso de reclutamiento masivo. Recomendación: redistribuir carga y habilitar apoyo temporal.','2025-11-21 14:15:00',1),(3,3,5.50,'Estrés medio en Ventas y Marketing. Presión por cumplimiento de metas trimestrales. Se sugiere implementar sesiones de relajación y revisar objetivos realistas.','2025-11-22 15:30:00',1),(4,1,4.20,'Incremento moderado en estrés por implementación de nuevo sistema. Temporal y manejable. Monitorear evolución en próxima semana.','2025-11-23 18:45:00',1),(5,2,7.20,'ALERTA: Nivel crítico en RH. Conflictos interpersonales detectados. Intervención urgente requerida con mediación profesional.','2025-11-24 20:20:00',1),(6,3,4.80,'Estrés estable en Ventas. Buen manejo de presión comercial. Mantener programa de wellness existente.','2025-11-25 12:30:00',1),(7,1,3.80,'Desarrollo de software con buen clima laboral. Estrés dentro de parámetros normales. Equipo motivado y productivo.','2025-11-26 16:00:00',1),(8,2,5.90,'Mejora en niveles de estrés tras intervención. Reducción del 20% respecto a semana anterior. Continuar con medidas correctivas.','2025-11-27 19:45:00',1),(9,3,6.20,'Incremento por campaña publicitaria intensiva. Estrés esperado pero requiere monitoreo. Considerar rotación de tareas.','2025-11-28 14:30:00',1),(10,1,2.90,'Excelente desempeño en gestión del estrés. Nivel más bajo registrado. Replicar mejores prácticas en otros departamentos.','2025-11-29 21:15:00',1);
 /*!40000 ALTER TABLE `reportes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -708,7 +709,7 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping routines for database 'gestion_estres_2'
+-- Dumping routines for database 'gestion_estres'
 --
 
 --
@@ -738,4 +739,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-26 19:04:37
+-- Dump completed on 2025-11-27 17:36:43
