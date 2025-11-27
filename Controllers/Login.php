@@ -45,7 +45,7 @@
                         sessionUser($_SESSION['idUser']);   
                         
                         // ✅ NUEVO: Registrar en bitácora emocional el login
-                        $this->registrarBitacoraLogin($_SESSION['idUser']);
+                        // $this->registrarBitacoraLogin($_SESSION['idUser']);
                                 
                         $arrResponse = array('status' => true, 'msg' => 'ok');
                     }else{
