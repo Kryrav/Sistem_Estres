@@ -243,7 +243,7 @@
                     <a href="<?= base_url(); ?>/login" class="btn btn-primary">Ver Demo </a>
                 </div>
                 <div class="col-lg-6">
-                    <img src="<?= media(); ?>/images/Dashboard.png" alt="Dashboard StressGuard" class="img-fluid rounded shadow">
+                    <img src="<?= media(); ?>/images/Dashboard_1.png" alt="Dashboard StressGuard" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
