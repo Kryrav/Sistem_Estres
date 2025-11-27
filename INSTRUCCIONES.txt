@@ -4,4 +4,4 @@ Para acceder debes colocar la ruta de tu proyecto en el navegador, por ejemplo:
 https//localhost/"Ruta de tu carpeta"/login
 
 Usuario: rene@gmail.com
-Clave: 123456
+Clave: 123

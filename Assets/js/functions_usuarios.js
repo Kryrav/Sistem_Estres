@@ -1,5 +1,5 @@
 let tableUsuarios;
-let rowTable = "";
+let rowTable = null;
 let divLoading = document.querySelector("#divLoading");
 document.addEventListener('DOMContentLoaded', function(){
 
@@ -85,25 +85,43 @@ document.addEventListener('DOMContentLoaded', function(){
             let formData = new FormData(formUsuario);
             request.open("POST",ajaxUrl,true);
             request.send(formData);
+            // ------------------------------------------------------
             request.onreadystatechange = function(){
                 if(request.readyState == 4 && request.status == 200){
                     let objData = JSON.parse(request.responseText);
                     if(objData.status)
                     {
-                        if(rowTable == ""){
-                            tableUsuarios.api().ajax.reload();
+                        // Verificamos si rowTable es null (Inserción) o un elemento (Actualización)
+                        if(rowTable == null){ 
+                            tableUsuarios.api().ajax.reload(); // Nuevo registro
                         }else{
+                            // 1. Obtener la instancia de la fila de DataTables a partir del elemento TR (rowTable)
+                            let filaDataTable = tableUsuarios.api().row(rowTable); 
+                            
+                            // 2. Obtener el objeto de datos actual de esa fila
+                            let datosFila = filaDataTable.data(); 
+
+                            // 3. Crear el HTML del estado
                             htmlStatus = intStatus == 1 ? 
                             '<span class="badge badge-success">Activo</span>' : 
                             '<span class="badge badge-danger">Inactivo</span>';
-                            rowTable.cells[1].textContent = strNombre;
-                            rowTable.cells[2].textContent = strApellido;
-                            rowTable.cells[3].textContent = strEmail;
-                            rowTable.cells[4].textContent = intTelefono;
-                            rowTable.cells[5].textContent = document.querySelector("#listRolid").selectedOptions[0].text;
-                            rowTable.cells[6].innerHTML = htmlStatus;
-                            rowTable="";
+
+                            // 4. Modificar los datos del objeto (¡IMPORTANTE! Usa los nombres de columna definidos en "columns")
+                            datosFila.nombres = strNombre;
+                            datosFila.apellidos = strApellido;
+                            datosFila.email_user = strEmail;
+                            datosFila.telefono = intTelefono;
+                            datosFila.nombrerol = document.querySelector("#listRolid").selectedOptions[0].text;
+                            datosFila.status = htmlStatus; // Sustituimos el texto/ID de status por el badge HTML
+
+                            // 5. Establecer los nuevos datos en la fila y redibujar (esto actualiza la fila principal y la fila responsive)
+                            filaDataTable.data(datosFila).draw(); 
+                            
+                            // 6. Resetear rowTable
+                            rowTable = null; 
                         }
+                        // ------------------------------------------------------
+                        
                         $('#modalFormUsuario').modal("hide");
                         formUsuario.reset();
                         swal("Usuarios", objData.msg ,"success");
@@ -373,6 +391,9 @@ function openModal()
     document.querySelector('#btnText').innerHTML ="Guardar";
     document.querySelector('#titleModal').innerHTML = "Nuevo Usuario";
     document.querySelector("#formUsuario").reset();
+    
+    rowTable = null; // <--- ¡Aseguramos que rowTable se limpia para inserción!
+
     $('#modalFormUsuario').modal('show');
 }
 

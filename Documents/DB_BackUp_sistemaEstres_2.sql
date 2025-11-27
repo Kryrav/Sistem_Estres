@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: gestion_estres
+-- Host: localhost    Database: gestion_estres_2
 -- ------------------------------------------------------
 -- Server version	9.1.0
 
@@ -60,8 +60,8 @@ DROP TABLE IF EXISTS `categorias_indicadores`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categorias_indicadores` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_general_ci,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_nombre_categoria` (`nombre`)
@@ -322,7 +322,7 @@ DROP TABLE IF EXISTS `opciones_pregunta`;
 CREATE TABLE `opciones_pregunta` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `pregunta_id` bigint NOT NULL,
-  `texto_opcion` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `texto_opcion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `valor_numerico` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pregunta_id` (`pregunta_id`)
@@ -421,8 +421,8 @@ DROP TABLE IF EXISTS `preguntas`;
 CREATE TABLE `preguntas` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `categoria_id` bigint NOT NULL,
-  `texto_pregunta` text COLLATE utf8mb4_general_ci NOT NULL,
-  `tipo_pregunta` varchar(10) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ESCALA, OPCION, TEXTO',
+  `texto_pregunta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo_pregunta` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ESCALA, OPCION, TEXTO',
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_preguntas_categoria` (`categoria_id`),
@@ -484,7 +484,7 @@ CREATE TABLE `respuestas` (
   `pregunta_id` bigint NOT NULL,
   `opcion_id` bigint DEFAULT NULL,
   `valor_respuesta` int NOT NULL DEFAULT '0',
-  `texto_respuesta` text COLLATE utf8mb4_general_ci,
+  `texto_respuesta` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `fecha_registro` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `persona_id` (`persona_id`),
@@ -568,7 +568,7 @@ CREATE TABLE `tareas` (
   `titulo` varchar(200) NOT NULL,
   `descripcion_detallada` text,
   `trabajador_id` bigint DEFAULT NULL,
-  `tipo_tarea_id` int DEFAULT NULL,
+  `tipo_tarea_id` bigint DEFAULT NULL,
   `minutos_estimados` int DEFAULT '0',
   `minutos_reales_invertidos` int DEFAULT '0',
   `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -580,7 +580,6 @@ CREATE TABLE `tareas` (
   PRIMARY KEY (`id`),
   KEY `trabajador_id` (`trabajador_id`),
   KEY `tipo_tarea_id` (`tipo_tarea_id`),
-  CONSTRAINT `tareas_fk_tipo` FOREIGN KEY (`tipo_tarea_id`) REFERENCES `tipos_tarea` (`id`) ON DELETE SET NULL,
   CONSTRAINT `tareas_fk_trabajador` FOREIGN KEY (`trabajador_id`) REFERENCES `trabajador` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -602,7 +601,7 @@ DROP TABLE IF EXISTS `tipos_tarea`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipos_tarea` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `factor_carga_cognitiva` decimal(5,2) DEFAULT '1.00',
   `color_hex` varchar(7) DEFAULT '#CCCCCC',
@@ -670,7 +669,7 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Dumping routines for database 'gestion_estres'
+-- Dumping routines for database 'gestion_estres_2'
 --
 
 --
@@ -700,4 +699,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-24 17:43:48
+-- Dump completed on 2025-11-24 19:15:59

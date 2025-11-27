@@ -9,7 +9,7 @@
 			{
 				header('Location: '.base_url().'/login');
 			}
-			getPermisos(2);
+			getPermisos(3);
 		}
 
 		public function Roles()
