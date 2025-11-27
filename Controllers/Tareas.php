@@ -9,7 +9,7 @@ class Tareas extends Controllers
             header('Location: '.base_url().'/login');
             exit;
         }
-        getPermisos(5); 
+        getPermisos(30); 
     }
     public function Tareas()
     {
@@ -32,6 +32,7 @@ class Tareas extends Controllers
             header("Location: ".base_url().'/dashboard');
             exit;
         }
+        getPermisos(31); 
         $data['page_id'] = 5;
         $data['page_tag'] = "Mis Tareas";
         $data['page_name'] = "mis_tareas";

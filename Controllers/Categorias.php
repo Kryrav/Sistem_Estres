@@ -9,7 +9,7 @@ class Categorias extends Controllers
         {
             header('Location: '.base_url().'/login');
         }
-        getPermisos(7); // Módulo 7: Categorías de Indicadores
+        getPermisos(22); // Módulo 7: Categorías de Indicadores
     }
 
     public function Categorias()

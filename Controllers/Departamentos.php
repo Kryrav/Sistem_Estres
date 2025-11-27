@@ -10,7 +10,7 @@ class Departamentos extends Controllers{
             header('Location: '.base_url().'/login');
         }
         // Asumiendo Módulo 4: Departamentos (según tabla 'modulo' en el dump)
-        getPermisos(4); 
+        getPermisos(10); 
     }
 
     public function Departamentos()

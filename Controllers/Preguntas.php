@@ -9,7 +9,7 @@ class Preguntas extends Controllers
         {
             header('Location: '.base_url().'/login');
         }
-        getPermisos(11); // Módulo 11: Banco de Preguntas
+        getPermisos(21); // Módulo 11: Banco de Preguntas
     }
 
     public function Preguntas()

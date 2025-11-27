@@ -9,7 +9,7 @@ class Bitacora extends Controllers
         {
             header('Location: '.base_url().'/login');
         }
-        getPermisos(7); // Módulo 7: Bitácora Emocional
+        getPermisos(32); // Módulo 7: Bitácora Emocional
     }
 
     public function bitacora()

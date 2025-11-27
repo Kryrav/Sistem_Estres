@@ -8,7 +8,7 @@
             {
                 header('Location: '.base_url().'/login');
             }
-            getPermisos(40); // Módulo 40 para Intervenciones
+            getPermisos(41); // Módulo 40 para Intervenciones
         }
 
         public function Intervenciones()

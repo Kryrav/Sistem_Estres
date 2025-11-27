@@ -8,7 +8,7 @@
             {
                 header('Location: '.base_url().'/login');
             }
-            getPermisos(20); 
+            getPermisos(42); 
         }
 
         public function Analiticas()

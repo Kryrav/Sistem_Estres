@@ -9,7 +9,7 @@ class Trabajador extends Controllers
 			{
 				header('Location: '.base_url().'/login');
 			}
-			getPermisos(5); // Asumiendo Módulo 5: Trabajadores
+			getPermisos(11); // Asumiendo Módulo 5: Trabajadores
     }
 
     public function Trabajador()

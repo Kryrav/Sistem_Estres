@@ -14,7 +14,7 @@ class Encuestas extends Controllers
             die();
         }
         // Módulo 12: Encuestas de Estrés (Ajuste el ID si es necesario)
-        getPermisos(12); 
+        getPermisos(20); 
     }
 
     /**
